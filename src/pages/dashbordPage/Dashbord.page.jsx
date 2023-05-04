@@ -2,10 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { cloneDeep } from "lodash";
 
+import { useSelector } from "react-redux";
+
 import ProductCardComponent from "../../componenets/ProductCard/ProductCard.component";
 import EditComponent from "../../componenets/EditComponent/Edit.component";
+import { Outlet } from "react-router-dom";
 
 const Dashbordpage = () => {
+  const isLogin = useSelector((store) => store.auth.loggedIn);
   const [email, setEmail] = useState("e@w.com");
   const [arrOfProducts, setArrOfProducts] = useState([]);
 
@@ -70,6 +74,9 @@ const Dashbordpage = () => {
         />
       ))}
       {showEditComp && <EditComponent onCancelClick={onCancel} />}
+      {/* <div id="detail">
+        <Outlet />
+      </div> */}
     </div>
   );
 };

@@ -8,14 +8,11 @@ import auth from "../../store/auth";
 import { useSelector, useDispatch } from "react-redux";
 
 const AddProductPage = () => {
+  const userData = useSelector((store) => store.auth.userData);
+
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
-  const [email, setEmail] = useState("");
-
-  const login = useSelector((store) => store.auth.loggedIn);
-  const dispatch = useDispatch();
-
-  console.log("login==", login);
+  const [email, setEmail] = useState(localStorage.getItem("userEmail"));
 
   const handleProductNameChange = (ev) => {
     setProductName(ev.target.value);
@@ -23,16 +20,12 @@ const AddProductPage = () => {
   };
   const handleProductPriceChange = (ev) => {
     setProductPrice(ev.target.value);
-    console.log(productPrice);
   };
-  const handleEmailChange = (ev) => {
-    setEmail(ev.target.value);
-    console.log(email);
-  };
+
   const handleSubmit = (ev) => {
     ev.preventDefault();
     const validateValue = Joi.validate(
-      { productName, productPrice },
+      { productName, productPrice, email },
       AddProductValidation,
       { abortEarly: false }
     );
@@ -104,7 +97,7 @@ const AddProductPage = () => {
             value={productPrice}
           />
         </div>
-        <div className="mb-3">
+        {/* <div className="mb-3">
           <label htmlFor="exampleInputPrice1" className="form-label">
             email
           </label>
@@ -115,7 +108,7 @@ const AddProductPage = () => {
             onChange={handleEmailChange}
             value={email}
           />
-        </div>
+        </div> */}
 
         <div className="text-center">
           <button className="btn btn-primary text-center m-5">Add</button>

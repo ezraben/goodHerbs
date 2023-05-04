@@ -1,11 +1,15 @@
 import axios from "axios";
 import Joi from "joi-browser";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/auth";
 
+import singUpCss from "./singUpCss.css";
 import SingUpValidation from "../../validation/SingUp.validation";
 
 const SingUpPage = () => {
+  const dispatch = useDispatch();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,6 +17,9 @@ const SingUpPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
+  useEffect(() => {
+    console.log("isAdmin isAdmin", isAdmin);
+  }, [isAdmin]);
   const hadlefirstNameChange = (ev) => {
     setFirstName(ev.target.value);
   };
@@ -30,7 +37,7 @@ const SingUpPage = () => {
     setConfirmPassword(ev.target.value);
   };
   const hadleisAdminChange = (ev) => {
-    setIsAdmin(false);
+    setIsAdmin(ev.target.checked);
   };
 
   const handleSubmit = (ev) => {
@@ -50,14 +57,14 @@ const SingUpPage = () => {
 
     const { error } = validateValue;
 
-    // console.log("error", error);
-    // if (!error) {
     axios
       .post("/auth/signUp", { firstName, lastName, email, password, isAdmin })
       .then((data) => {
         console.log("data", data);
         console.log("data.status", data.data.status);
         if (data.data.status === "Success") {
+          console.log("isAdmin singup", isAdmin);
+          dispatch(authActions.isAdmin({ isAdmin }));
           toast.success(
             `🦄 welcome ${firstName} you  registered successfully!`,
             {
@@ -179,17 +186,32 @@ const SingUpPage = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="exampleInputisAdmin1" className="form-label">
-            isAdmin
+          <label className="switch">
+            {" "}
+            <span className="slider round"></span>
+            <input
+              type="checkbox"
+              onChange={hadleisAdminChange}
+              value={isAdmin}
+            />
+            <span className="slider round"></span>
           </label>
-          <input
-            type="isAdmin"
-            className="form-control"
-            id="exampleInputisAdmin1"
-            placeholder="isAdmin"
-            onChange={hadleisAdminChange}
-            value={isAdmin}
-          />
+          {isAdmin === false && (
+            <span
+            // onChange={hadleisAdminChange}
+            // className="showSliderMsg"
+            >
+              switch on for admin account
+            </span>
+          )}
+          {isAdmin === true && (
+            <span
+
+            // className="showSliderMsg"
+            >
+              Admin account is on
+            </span>
+          )}
         </div>
 
         <div className="text-center">

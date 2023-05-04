@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 import Joi from "joi-browser";
+import { useDispatch, useSelector } from "react-redux";
 import LoginValidation from "../../validation/Login.validation";
+import auth, { authActions } from "../../store/auth";
+import { Outlet, useNavigate } from "react-router-dom";
+import Dashbordpage from "../dashbordPage/Dashbord.page";
 
 const LoginPage = () => {
+  const isLogin = useSelector((store) => store.auth.loggedIn);
+
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   console.log("isLogin", isLogin);
+  // }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,6 +26,8 @@ const LoginPage = () => {
   const hadlePasswordChange = (ev) => {
     setPassword(ev.target.value);
   };
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
@@ -41,10 +54,8 @@ const LoginPage = () => {
 
         .post("/auth/login", { email, password })
         .then(({ data }) => {
-          localStorage.setItem("token", data.msg);
-
           if (data) {
-            console.log("data", data);
+            console.log("data from login", data);
             if (data.status === "Failed") {
               console.log("data stataus", data.status);
               toast.error(data.msg, {
@@ -72,6 +83,12 @@ const LoginPage = () => {
             }
 
             if (data.status === "Success") {
+              localStorage.setItem("token", data.msg);
+              localStorage.setItem("isAdmin", data.admin);
+              localStorage.setItem("userEmail", email);
+
+              dispatch(authActions.login());
+
               toast.success(`🦄 welcome ${email} `, {
                 position: "top-right",
                 autoClose: 5000,
@@ -81,6 +98,12 @@ const LoginPage = () => {
                 draggable: true,
                 progress: undefined,
               });
+              dispatch(authActions.userEmail(email));
+              dispatch(authActions.isAdmin(data.admin));
+              //  const isLogin = useSelector((store) => store.auth.loggedIn);
+
+              navigate("/addProduct");
+              // navigate("/dash");
             }
           }
         })

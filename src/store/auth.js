@@ -8,7 +8,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initalAuthState = {
   loggedIn: false,
   //   admin: false,
-  //   userData: {},
+  userData: {},
 };
 
 const authSlice = createSlice({
@@ -16,8 +16,22 @@ const authSlice = createSlice({
   initialState: initalAuthState,
   reducers: {
     //   increment: (state, action: PayloadAction<number>) => state + action.payload,
+    userEmail(state, email) {
+      state.userData.email = email.payload;
+    },
+    isAdmin(state, admin) {
+      state.userData.admin = admin.payload;
+    },
+    // isAdmin(state, admin) {
+    //   state.userData.admin = admin.payload;
+    // },
+
     login(state) {
       state.loggedIn = true;
+    },
+    logOut(state) {
+      state.loggedIn = false;
+      state.userData = {};
     },
   },
 });
