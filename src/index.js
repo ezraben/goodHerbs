@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 
 import axios from "axios";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 /* import bootstrap to react project */
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
@@ -18,8 +18,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import store from "./store/index";
 
-import Root from "./routes/root";
-import ErrorPage from "./pages/ErrorPage/Error.page";
+// import Root from "./routes/root";
+// import ErrorPage from "./pages/ErrorPage/Error.page";
 
 // const router = createBrowserRouter([
 //   {

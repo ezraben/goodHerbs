@@ -32,10 +32,7 @@ const AllProductsComponent = (props) => {
   //////////////////////////////
   //this function delete product card from data base and stat - it was moved to dashBord- maybe whan  wanna delete something from all cards the base of it can help
   // const deleteFromGetAllCards = (id) => {
-  //   // console.log(
-  //   //   "delete card click from card component but invoked in all products page",
-  //   //   id
-  //   // );
+
   //   axios
   //     .delete(`/products/removeProduct?id=${id}`)
   //     .then((data) => {
@@ -49,7 +46,7 @@ const AllProductsComponent = (props) => {
   //         console.log("index is", productIndex);
   //         copyArrOfProducts.splice(productIndex);
   //         setArrOfProducts(copyArrOfProducts);
-  //         // handleGetAllCardsClick();
+  //         handleGetAllCardsClick();
   //       }
   //       // if (arrOfProducts.length > 0) {
   //       // }
@@ -81,49 +78,3 @@ const AllProductsComponent = (props) => {
 };
 
 export default AllProductsComponent;
-////////////////////////////////////////////////
-//until here  works delete from DB - not state yet and get card id but  the function where on productPage from here im trying to  move the functions to this page  so it also befor changes on that page
-
-// import axios from "axios";
-// import { useEffect, useState } from "react";
-// import ProductCardComponent from "../ProductCard/ProductCard.component";
-// import allCardsCss from "./allProductsCss.css";
-// const AllProductsComponent = (props) => {
-//   const [arrOfProducts, setArrOfProducts] = useState([]);
-
-//   useEffect(() => {
-//     console.log("arrOfProducts-- productName--arrOfCards ", arrOfProducts);
-//   }, [arrOfProducts]);
-
-//   const handleGetAllCardsClick = () => {
-//     console.log("click");
-
-//     axios
-//       .get("/products")
-//       .then((data) => {
-//         setArrOfProducts(data.data);
-
-//         console.log("arrOfProducts", arrOfProducts);
-//       })
-//       .catch((err) => {
-//         console.log("err", err);
-//       });
-//   };
-
-//   return (
-//     <div className="rows">
-//       {arrOfProducts.map((arr) => (
-//         <ProductCardComponent
-//           setProductName={arr.productName}
-//           setProductPrice={arr.productPrice}
-//           setProductId={arr._id}
-//           key={arr._id}
-//         />
-//       ))}
-
-//       <button onClick={handleGetAllCardsClick}> get all card</button>
-//     </div>
-//   );
-// };
-
-// export default AllProductsComponent;

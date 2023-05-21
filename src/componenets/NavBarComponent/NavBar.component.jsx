@@ -1,131 +1,194 @@
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../store/auth";
 // import { authActions } from "../../store/auth";
-// import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
-// import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 
-// const NavBarComponent = () => {
-//   const isLogin = useSelector((store) => store.auth.loggedIn);
+const NavBarComponent = () => {
+  const isLogin = useSelector((store) => store.auth.loggedIn);
+  const admin = localStorage.getItem("isAdmin");
 
-//   const dispatch = useDispatch();
-//   // const navigate = useNavigate();
-//   useEffect(() => {
-//     handleRefresh();
-//   }, []);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    handleRefresh();
+  }, []);
 
-//   const handleRefresh = () => {
-//     if (localStorage.getItem("token")) {
-//       dispatch(authActions.login());
-//     } else {
-//       dispatch(authActions.logOut());
-//     }
-//   };
+  const handleRefresh = () => {
+    if (localStorage.getItem("token")) {
+      dispatch(authActions.login());
+    } else {
+      dispatch(authActions.logOut());
+    }
+  };
 
-//   const logOut = (ev) => {
-//     localStorage.clear();
-//     dispatch(authActions.logOut());
-//     // navigate("/login");
-//   };
+  const logOut = (ev) => {
+    localStorage.clear();
+    dispatch(authActions.logOut());
+    navigate("/login");
+  };
 
-//   return (
-//     <nav
-//       className={
-//         isLogin
-//           ? "navbar navbar-expand-lg navbar-light bg-success"
-//           : "navbar navbar-expand-lg navbar-light bg-danger"
-//       }
-//     >
-//       {/* <nav className="navbar navbar-expand-lg navbar-light bg-light"> */}
-//       <div className="container-fluid">
-//         <a className="navbar-brand" href="#">
-//           Navbar
-//         </a>
-//         <button
-//           className="navbar-toggler"
-//           type="button"
-//           data-bs-toggle="collapse"
-//           data-bs-target="#navbarSupportedContent"
-//           aria-controls="navbarSupportedContent"
-//           aria-expanded="false"
-//           aria-label="Toggle navigation"
-//         >
-//           <span className="navbar-toggler-icon"></span>
-//         </button>
-//         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-//           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-//             <li className="nav-item">
-//               <a className="nav-a active" aria-current="page" href="#">
-//                 Home
-//               </a>
-//             </li>
-//             <li className="nav-item">
-//               <a className="nav-link" href="login">
-//                 Login
-//               </a>
-//             </li>
-//             <li className="nav-item">
-//               <a className="nav-link" href="SingUpPage">
-//                 SingUpPage
-//               </a>
-//             </li>
-//             <li className="nav-item dropdown">
-//               <a
-//                 className="nav-link dropdown-toggle"
-//                 href="#"
-//                 id="navbarDropdown"
-//                 role="button"
-//                 data-bs-toggle="dropdown"
-//                 aria-expanded="false"
-//               >
-//                 Dropdown
-//               </a>
-//               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-//                 <li>
-//                   <a className="dropdown-item" href="addProduct">
-//                     addProduct
-//                   </a>
-//                 </li>
-//                 <li>
-//                   <a className="dropdown-item" href="AllProductsComponent">
-//                     AllProductsComponent
-//                   </a>
-//                 </li>
-//                 <li>
-//                   <hr className="dropdown-divider" />
-//                 </li>
-//               </ul>
-//             </li>
-//             <li onClick={logOut} className="nav-item">
-//               <a className="nav-link" href="#">
-//                 LogOut
-//               </a>
-//             </li>
-//             <li className="nav-item">
-//               <a
-//                 className="nav-link disabled"
-//                 href="#"
-//                 tabIndex="-1"
-//                 aria-disabled="true"
-//               >
-//                 Disabled
-//               </a>
-//             </li>
-//           </ul>
-//           <form className="d-flex">
-//             <input
-//               className="form-control me-2"
-//               type="search"
-//               placeholder="Search"
-//               aria-label="Search"
-//             />
-//             <button className="btn btn-outline-success" type="submit">
-//               Search
-//             </button>
-//           </form>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
+  return (
+    <div>
+      <nav
+        className={
+          isLogin
+            ? "navbar navbar-expand-lg navbar-light bg-success"
+            : "navbar navbar-expand-lg navbar-light bg-danger"
+        }
+      >
+        {/* <nav className="navbar navbar-expand-lg navbar-light bg-light"> */}
+        <div className="container-fluid">
+          <NavLink className="navbar-brand" to="#">
+            Navbar
+          </NavLink>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <NavLink className="nav-a active" aria-current="page" to="#">
+                  Home
+                </NavLink>
+              </li>
 
-// export default NavBarComponent;
+              {!isLogin && (
+                <Fragment>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="login">
+                      Login
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="SingUpPage">
+                      SingUpPage
+                    </NavLink>
+                  </li>
+                </Fragment>
+              )}
+              {isLogin && admin === "false" && (
+                <Fragment>
+                  <li onClick={logOut} className="nav-item">
+                    <NavLink className="nav-link" to="#">
+                      LogOut
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      className="dropdown-item"
+                      to="AllProductsComponent"
+                    >
+                      AllProductsComponent
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link "
+                      to="/DeleteAccountPage"
+                      tabIndex="-1"
+                      aria-disabled="true"
+                    >
+                      DeleteAccountPage
+                    </NavLink>
+                  </li>
+                </Fragment>
+              )}
+
+              {isLogin && admin === "true" && (
+                <Fragment>
+                  <li className="nav-item dropdown">
+                    <NavLink
+                      className="nav-link dropdown-toggle"
+                      to="#"
+                      id="navbarDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Dropdown
+                    </NavLink>
+                    <ul
+                      className="dropdown-menu"
+                      aria-labelledby="navbarDropdown"
+                    >
+                      <li>
+                        <NavLink className="dropdown-item" to="addProduct">
+                          addProduct
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          className="dropdown-item"
+                          to="AllProductsComponent"
+                        >
+                          AllProductsComponent
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink className="dropdown-item" to="dash">
+                          Dashbord
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          className="dropdown-item"
+                          to="SupeAdminDashBordPage"
+                        >
+                          SupeAdminDashBordPage
+                        </NavLink>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                    </ul>
+                  </li>
+                  <li onClick={logOut} className="nav-item">
+                    <NavLink className="nav-link" to="#">
+                      LogOut
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link "
+                      to="/DeleteAccountPage"
+                      tabIndex="-1"
+                      aria-disabled="true"
+                    >
+                      DeleteAccountPage
+                    </NavLink>
+                  </li>
+                </Fragment>
+              )}
+            </ul>
+            <form className="d-flex">
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+      {/* <div id="detail">
+        <Outlet />
+      </div> */}
+    </div>
+  );
+};
+
+export default NavBarComponent;

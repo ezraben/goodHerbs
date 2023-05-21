@@ -1,16 +1,18 @@
-import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 import AddProductValidation from "../../validation/AddProduct.validation";
 import Joi from "joi-browser";
+import auth from "../../store/auth";
+import { useSelector, useDispatch } from "react-redux";
 
 import editCss from "./editCss.css";
-
+import { useState } from "react";
 const EditComponent = (props) => {
-  const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState("");
-  const [email, setEmail] = useState("");
+  const [id, setId] = useState(props.id);
+  const [productName, setProductName] = useState(props.name);
+  const [productPrice, setProductPrice] = useState(props.price);
+  const [email, setEmail] = useState(localStorage.getItem("userEmail"));
 
   const handleProductNameChange = (ev) => {
     setProductName(ev.target.value);
@@ -18,25 +20,10 @@ const EditComponent = (props) => {
   };
   const handleProductPriceChange = (ev) => {
     setProductPrice(ev.target.value);
-    console.log(productPrice);
   };
-  const handleEmailChange = (ev) => {
-    setEmail(ev.target.value);
-    console.log(email);
-  };
-
-  const handleCancelClick = (ev) => {
-    ev.stopPropagation();
-    props.onCancelClick();
-    console.log("hhhhhh");
-  };
-  const handleformClick = (ev) => {
-    ev.stopPropagation();
-  };
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
+  const editDone = () => {
     const validateValue = Joi.validate(
-      { productName, productPrice },
+      { productName, productPrice, email },
       AddProductValidation,
       { abortEarly: false }
     );
@@ -54,38 +41,36 @@ const EditComponent = (props) => {
           progress: undefined,
         });
       }
-    } else {
-      axios
-        .post("/products/addProduct", { productName, productPrice, email })
-        .then((data) => {
-          console.log("data from axios", data);
-          toast.success(
-            `🦄 woop woop ${productName} product added successfully!`,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            }
-          );
-        })
-        .catch((err) => {
-          console.log("err from axios", err);
-        });
     }
+
+    axios
+      .put(
+        `products/editProduct?id=${props.id}&productName=${productName}&productPrice=${productPrice}&email=${email}`
+      )
+      .then((data) => {
+        console.log("data from axios", data);
+        if (data.status === "Success") {
+          toast.success(`🦄 woop woop product was edited successfully!`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
+        props.edit();
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
   };
+
   return (
-    <div onClick={handleCancelClick} className="center-wrapper">
-      {" "}
-      <form
-        onSubmit={handleSubmit}
-        onClick={handleformClick}
-        className="topSpaceFromNav form-group center-form "
-      >
-        <h1 className="text-center mt-5">Edit product</h1>
+    <div className="product center-wrapper">
+      <h1 className="text-center mt-5">Edit product</h1>
+      <div className="center-form">
         <div className="mb-3">
           <label htmlFor="exampleInputProductName1" className="form-label">
             Product Name
@@ -111,31 +96,20 @@ const EditComponent = (props) => {
             value={productPrice}
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPrice1" className="form-label">
-            email
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="exampleInputEmail1"
-            onChange={handleEmailChange}
-            value={email}
-          />
-        </div>
 
-        <div className="text-center">
-          <button className="btn btn-primary text-center m-5">Edit</button>
-          <button
-            onClick={handleCancelClick}
-            className="btn btn-danger text-center m-5"
-          >
+        <div className="mb-3">
+          <h2> product id:{props.id} </h2>
+        </div>
+        <div className="buttonContainer">
+          <button onClick={editDone} className="btn btn-warning">
+            Edit Product
+          </button>
+          <button onClick={props.cancel} className="btn btn-danger">
             Cancel
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
-
 export default EditComponent;

@@ -6,7 +6,7 @@ import Joi from "joi-browser";
 import { useDispatch, useSelector } from "react-redux";
 import LoginValidation from "../../validation/Login.validation";
 import auth, { authActions } from "../../store/auth";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Dashbordpage from "../dashbordPage/Dashbord.page";
 
 const LoginPage = () => {

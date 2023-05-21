@@ -11,9 +11,6 @@ import Dashbordpage from "./pages/dashbordPage/Dashbord.page";
 import EditComponent from "./componenets/EditComponent/Edit.component";
 import HomePage from "./pages/HomePage/Home.page";
 
-// import NavBarComponent from "./componenets/NavBarComponent/NavBar.component";
-// import ProtectedRoute from "./routes/ProtectedRoute";
-
 import {
   createBrowserRouter,
   Route,
@@ -29,31 +26,28 @@ import { Fragment, useEffect } from "react";
 import NavBarComponent from "./routes/root";
 import ProtectedComponent from "./routes/protectedRoutes/dashBordProtection/DashbordProtected";
 import ProtectingAddProductComponent from "./routes/protectedRoutes/addProductProtection/ProtecteingAddProducd.component";
+import NavbarWrapper from "./componenets/NavWraper/NavbarWrapper";
+import DeleteAccountPage from "./pages/DeleteAccountPage/DeleteAccount.page";
+import DeleteUserProtection from "./routes/protectedRoutes/deleteUserProtection/DeleteUserProtection";
+import SupeAdminDashBordPage from "./pages/SuperAdminDshbord/SuperAdminDasbord.page";
 
 function App() {
   const isLogin = useSelector((store) => store.auth.loggedIn);
   useEffect(() => {}, [isLogin]);
 
   const router = createBrowserRouter([
-    // {
-    //   path: "/",
-    //   element: <NavBarComponent />,
-    //   errorElement: <ErrorPage />,
-    //   children: [
     {
       path: "/",
-      element: <Root />,
-      errorElement: <ErrorPage />,
+      element: <NavbarWrapper />,
       children: [
-        // {
-        //   path: "/",
-        //   element: <HomePage />,
-        // },
+        {
+          path: "/", // yes, again
+          element: <HomePage />,
+        },
         {
           path: "/login",
           element: <LoginPage />,
         },
-
         {
           path: "/SingUpPage",
           element: <SingUpPage />,
@@ -71,34 +65,24 @@ function App() {
           path: "/AllProductsComponent",
           element: <AllProductsComponent />,
         },
-        // {
-        //   path: "/HomePage",
-        //   element: <HomePage />,
-        // },
+        {
+          path: "/DeleteAccountPage",
+          element: <DeleteUserProtection />,
+        },
+        {
+          path: "/SupeAdminDashBordPage",
+          element: <SupeAdminDashBordPage />,
+        },
       ],
     },
   ]);
-
-  // const protectedRouts = createBrowserRouter([
-  //   {
-  //     path: "/dash",
-  //     element: <Dashbordpage />,
-  //     children: [
-  //       {
-  //         path: "/dash",
-  //         element: <Dashbordpage />,
-  //       },
-  //     ],
-  //   },
-
-  // ]);
 
   return (
     <div className="container">
       <div className="container">
         <ToastContainer />
+        {/* <NavBarComponent /> */}
         <RouterProvider router={router}>
-          <NavBarComponent />
           <Router>
             <Routes>
               <Route
@@ -114,6 +98,14 @@ function App() {
                 element={
                   <ProtectedComponent isLogin={isLogin}>
                     <AddProductPage />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path="/DeleteAccountPage"
+                element={
+                  <ProtectedComponent isLogin={isLogin}>
+                    <DeleteAccountPage />
                   </ProtectedComponent>
                 }
               />

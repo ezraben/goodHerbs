@@ -1,17 +1,12 @@
-.product {
+/* .user {
   border: 1px solid;
   box-shadow: 5px 5px 5px black;
   border-radius: 10px;
   margin-bottom: 10vh;
   padding: 5vh;
 }
-.product:hover {
+.user:hover {
   cursor: pointer;
   background-color: red;
   color: white;
-}
-.buttonContainer {
-  /* background-color: black; */
-  display: flex;
-  justify-content: space-evenly;
-}
+} */

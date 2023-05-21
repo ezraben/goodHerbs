@@ -1,13 +1,13 @@
-// import { Outlet } from "react-router-dom";
-// const HomePage = () => {
-//   return (
-//     <div>
-//       HomePage
-//       <div id="detail">
-//         <Outlet />
-//       </div>
-//     </div>
-//   );
-// };
+import { Outlet } from "react-router-dom";
+const HomePage = () => {
+  return (
+    <div>
+      HomePage
+      {/* <div id="detail">
+        <Outlet />
+      </div> */}
+    </div>
+  );
+};
 
-// export default HomePage;
+export default HomePage;
