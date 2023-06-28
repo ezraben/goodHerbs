@@ -19,6 +19,7 @@ const SupeAdminDashBordPage = () => {
   const [isUserAdmin, setIsUserAdmin] = useState();
 
   const [arrOfUsers, setArrOfUsers] = useState([]);
+  const [rowNumber, setRowNumber] = useState("");
 
   const handleShowPopUp = (id, email) => {
     setShowDeleteComp(true);
@@ -34,7 +35,6 @@ const SupeAdminDashBordPage = () => {
     setUerFirstName(firstName);
     setUsersLastName(lastName);
     setUserEmail(email);
-    console.log("usersLastName usersLastName", usersLastName);
   };
   const hideDeletePopUp = () => {
     setShowDeleteComp(false);
@@ -59,10 +59,16 @@ const SupeAdminDashBordPage = () => {
     axios
       .delete(`/users/removeUser?id=${userId}`)
       .then((data) => {
+        axios
+          .delete(`products/deleteProductsByUserForDelete?email=${userEmail}`)
+
+          .then((data) => {})
+          .catch((err) => {
+            console.log("err", err);
+          });
         getAllUsers();
         console.log(data);
         hideDeletePopUp();
-        //  props.showAllUsers();
       })
       .catch((err) => {
         console.log("err", err);
@@ -105,12 +111,6 @@ const SupeAdminDashBordPage = () => {
           email={userEmail}
         />
       )}
-
-      {/* {arrOfUsers.map((arr) => (
-        <DeletePopUp key={arr._id}
-        showEditDeletePopUp = {} />
-      ))} */}
-      {/* <button onClick={getAllUsers}>get all users</button> */}
     </div>
   );
 };

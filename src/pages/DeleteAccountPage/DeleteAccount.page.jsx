@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const DeleteAccountPage = () => {
   const isLogin = useSelector((store) => store.auth.loggedIn);
-  const userData = useSelector((store) => store.auth.userData);
+  const userEmail = localStorage.getItem("userEmail");
 
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
 
@@ -24,14 +24,17 @@ const DeleteAccountPage = () => {
   };
 
   const handleDeleteBtnClick = (ev) => {
-    console.log("userData.email", userData.email);
+    console.log("userEmail", userEmail);
+
     axios
-      .delete(`products/deleteProductsByUserForDelete?email=${userData.email}`)
+      .delete(`products/deleteProductsByUserForDelete?email=${userEmail}`)
+
       .then((data) => {
         console.log("data from innnerrr axios", data);
-        if (userData.email) {
+        if (userEmail) {
           axios
-            .delete(`/users/removeUser?email=${userData.email}`)
+            .delete(`/users/removeUserByMail?email=${userEmail}`)
+
             .then((data) => {
               localStorage.clear();
               dispatch(authActions.logOut());
@@ -77,12 +80,7 @@ const DeleteAccountPage = () => {
           <span className="slider round"></span>
         </label>
         {showDeleteBtn === false && (
-          <span
-          // onChange={hendleShowDeleteBtn}
-          // className="showSliderMsg"
-          >
-            switch on to delete your account
-          </span>
+          <span>switch on to delete your account</span>
         )}
         {showDeleteBtn === true && isLogin === true && (
           <Fragment>

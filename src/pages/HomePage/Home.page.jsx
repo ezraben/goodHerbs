@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 const HomePage = () => {
   return (
     <div>
-      HomePage
+      <h1>Home page</h1>
       {/* <div id="detail">
         <Outlet />
       </div> */}

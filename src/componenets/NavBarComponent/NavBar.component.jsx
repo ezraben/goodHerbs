@@ -8,6 +8,7 @@ import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 const NavBarComponent = () => {
   const isLogin = useSelector((store) => store.auth.loggedIn);
   const admin = localStorage.getItem("isAdmin");
+  const userEmail = localStorage.getItem("userEmail");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,7 +41,8 @@ const NavBarComponent = () => {
       >
         {/* <nav className="navbar navbar-expand-lg navbar-light bg-light"> */}
         <div className="container-fluid">
-          <NavLink className="navbar-brand" to="#">
+          {isLogin ? <div>{userEmail}</div> : <div>you are not connected</div>}
+          <NavLink className="navbar-brand" to="/">
             Navbar
           </NavLink>
           <button
@@ -57,9 +59,9 @@ const NavBarComponent = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <NavLink className="nav-a active" aria-current="page" to="#">
+                {/* <NavLink className="nav-a active" aria-current="page" to="#">
                   Home
-                </NavLink>
+                </NavLink> */}
               </li>
 
               {!isLogin && (
@@ -101,6 +103,16 @@ const NavBarComponent = () => {
                       DeleteAccountPage
                     </NavLink>
                   </li>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link "
+                      to="/LikedProductPage"
+                      tabIndex="-1"
+                      aria-disabled="true"
+                    >
+                      LikedProductPage
+                    </NavLink>
+                  </li>
                 </Fragment>
               )}
 
@@ -137,6 +149,14 @@ const NavBarComponent = () => {
                       <li>
                         <NavLink className="dropdown-item" to="dash">
                           Dashbord
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          className="dropdown-item"
+                          to="LikedProductPage"
+                        >
+                          LikedProductPage
                         </NavLink>
                       </li>
                       <li>

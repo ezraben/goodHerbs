@@ -6,7 +6,7 @@ import Joi from "joi-browser";
 import { useDispatch, useSelector } from "react-redux";
 import LoginValidation from "../../validation/Login.validation";
 import auth, { authActions } from "../../store/auth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Dashbordpage from "../dashbordPage/Dashbord.page";
 
 const LoginPage = () => {
@@ -14,9 +14,6 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   console.log("isLogin", isLogin);
-  // }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -100,10 +97,13 @@ const LoginPage = () => {
               });
               dispatch(authActions.userEmail(email));
               dispatch(authActions.isAdmin(data.admin));
-              //  const isLogin = useSelector((store) => store.auth.loggedIn);
 
-              navigate("/addProduct");
-              // navigate("/dash");
+              if (data.admin === true) {
+                navigate("/addProduct");
+              }
+              if (data.admin === false) {
+                navigate("/AllProductsComponent");
+              }
             }
           }
         })

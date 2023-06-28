@@ -16,13 +16,14 @@ const Dashbordpage = (props) => {
   const [idForEdit, setIdForEdit] = useState("");
   const [nameForEdit, setNameForEdit] = useState("");
   const [priceForEdit, setPriceForEdit] = useState("");
+  const [quantityForEdit, setQuantityForEdit] = useState("");
 
-  const editProduct = (id, name, price) => {
+  const editProduct = (id, name, price, quantity) => {
     setShowEditComp(true);
     setIdForEdit(id);
     setNameForEdit(name);
     setPriceForEdit(price);
-    // console.log("id,name,price passing", id, name, price);
+    setQuantityForEdit(quantity);
   };
 
   const onEditDone = () => {
@@ -33,7 +34,9 @@ const Dashbordpage = (props) => {
     setShowEditComp(false);
   };
 
-  useEffect(() => {}, [arrOfProducts]);
+  useEffect(() => {
+    console.log("arrPfProducts", arrOfProducts);
+  }, [arrOfProducts]);
 
   useEffect(() => {
     getCards();
@@ -81,6 +84,7 @@ const Dashbordpage = (props) => {
           setProductId={arr._id}
           setProductName={arr.productName}
           setProductPrice={arr.productPrice}
+          setProductQuantity={arr.productQuantity}
           handleDeleteProduct={deleteProduct}
           handleShowEditProduct={editProduct}
           key={arr._id}
@@ -91,6 +95,7 @@ const Dashbordpage = (props) => {
           id={idForEdit}
           name={nameForEdit}
           price={priceForEdit}
+          quantity={quantityForEdit}
           cancel={onCancel}
           edit={onEditDone}
         />

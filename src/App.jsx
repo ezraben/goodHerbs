@@ -30,6 +30,7 @@ import NavbarWrapper from "./componenets/NavWraper/NavbarWrapper";
 import DeleteAccountPage from "./pages/DeleteAccountPage/DeleteAccount.page";
 import DeleteUserProtection from "./routes/protectedRoutes/deleteUserProtection/DeleteUserProtection";
 import SupeAdminDashBordPage from "./pages/SuperAdminDshbord/SuperAdminDasbord.page";
+import LikedProductPage from "./pages/likedProductPage/LikedProduct.page";
 
 function App() {
   const isLogin = useSelector((store) => store.auth.loggedIn);
@@ -72,6 +73,10 @@ function App() {
         {
           path: "/SupeAdminDashBordPage",
           element: <SupeAdminDashBordPage />,
+        },
+        {
+          path: "/LikedProductPage",
+          element: <LikedProductPage />,
         },
       ],
     },

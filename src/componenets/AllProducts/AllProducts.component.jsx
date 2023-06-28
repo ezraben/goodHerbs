@@ -1,63 +1,84 @@
-////////////////////////////////////////////////
-//from here  works delete from DB - not state yet and get card id but  the function where on productPage from here im trying to  move the functions to this page  so it also befor changes on that page
 import axios from "axios";
+import { toast } from "react-toastify";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
 import ProductCardComponent from "../ProductCard/ProductCard.component";
-import allCardsCss from "./allProductsCss.css";
+import { log } from "joi-browser";
+
 const AllProductsComponent = (props) => {
   const [arrOfProducts, setArrOfProducts] = useState([]);
+  const [logInUserEmail, setLogInUserEmail] = useState(
+    localStorage.getItem("userEmail")
+  );
+  // const [arrOfLikedProductId, setArrOfLikedProductId] = useState([]);
+  // const [likeMsgToPass, setLikeMsgToPass] = useState(false);
 
   useEffect(() => {
-    console.log("arrOfProducts-- productName--arrOfCards ", arrOfProducts);
-    // handleGetAllCardsClick();
+    // console.log("arrOfProducts-- productName--arrOfCards ", arrOfProducts);
   }, [arrOfProducts]);
   useEffect(() => {
     handleGetAllCardsClick();
   }, []);
+  // useEffect(() => {
+  //   console.log(
+  //     "uzse arrOfLikedProductId",
+  //     arrOfLikedProductId,
+  //     "------setProductId"
+  //     //  setProductId
+  //   );
+  // }, [arrOfLikedProductId]);
+  // useEffect(() => {}, [arrOfLikedProductId]);
+  // useEffect(() => {
+  //   // ShowLikedProducts();
+  //   console.log("likeMsgToPass", likeMsgToPass);
+  // }, [likeMsgToPass]);
 
   const handleGetAllCardsClick = () => {
     axios
       .get("/products")
       .then((data) => {
         setArrOfProducts(data.data);
-
-        console.log("arrOfProducts", arrOfProducts);
       })
       .catch((err) => {
         console.log("err", err);
       });
   };
 
-  //////////////////////////////
-  //this function delete product card from data base and stat - it was moved to dashBord- maybe whan  wanna delete something from all cards the base of it can help
-  // const deleteFromGetAllCards = (id) => {
+  const buyClick = (setProductId) => {
+    axios
+      .put(`/products/decreaseProductQuantity?id=${setProductId}`)
+      .then((data) => {
+        toast.success(`🦄 you bot the product!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        handleGetAllCardsClick();
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
 
+  // const ShowLikedProducts = (id) => {
   //   axios
-  //     .delete(`/products/removeProduct?id=${id}`)
+  //     .get(`/users/showLikedProductsByUser?email=${logInUserEmail}`)
   //     .then((data) => {
-  //       let copyArrOfProducts = cloneDeep(arrOfProducts);
-  //       let productIndex = copyArrOfProducts.findIndex(
-  //         (item) => item._id === id
-  //       );
-  //       // let productIndex = copyArrOfProducts.find((item) => item._id === id);
-
-  //       if (productIndex > -1) {
-  //         console.log("index is", productIndex);
-  //         copyArrOfProducts.splice(productIndex);
-  //         setArrOfProducts(copyArrOfProducts);
-  //         handleGetAllCardsClick();
-  //       }
-  //       // if (arrOfProducts.length > 0) {
-  //       // }
+  //       setArrOfLikedProductId(data.data);
   //     })
   //     .catch((err) => {
-  //       console.log("err deleting from axios", err);
+  //       console.log("err", err);
   //     });
+  //   for (let i = 0; i < arrOfLikedProductId.length; i++) {
+  //     if (arrOfLikedProductId[i] === id) {
+  //       setLikeMsgToPass(true);
+  //     }
+  //   }
   // };
-
-  //////////////////////////////
-  // until here  this function delete product card from data base and stat - it was moved to dashBord- maybe whan  wanna delete something from all cards the base of it can help
 
   return (
     <div className="rows">
@@ -65,14 +86,14 @@ const AllProductsComponent = (props) => {
         <ProductCardComponent
           setProductName={arr.productName}
           setProductPrice={arr.productPrice}
+          setProductQuantity={arr.productQuantity}
           setProductId={arr._id}
-          // handleDeleteProduct={deleteFromGetAllCards}
+          handleBuyProductClick={buyClick}
+          // invocLikeProduct={ShowLikedProducts}
+          // handleLikeMsg={likeMsgToPass}
           key={arr._id}
         />
       ))}
-
-      {/* <button onClick={handleGetAllCardsClick}> get all card</button> */}
-      <button onClick={handleGetAllCardsClick}> get all card</button>
     </div>
   );
 };

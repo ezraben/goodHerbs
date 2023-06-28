@@ -12,6 +12,7 @@ const EditComponent = (props) => {
   const [id, setId] = useState(props.id);
   const [productName, setProductName] = useState(props.name);
   const [productPrice, setProductPrice] = useState(props.price);
+  const [productQuantity, setProductQuantity] = useState(props.quantity);
   const [email, setEmail] = useState(localStorage.getItem("userEmail"));
 
   const handleProductNameChange = (ev) => {
@@ -21,9 +22,12 @@ const EditComponent = (props) => {
   const handleProductPriceChange = (ev) => {
     setProductPrice(ev.target.value);
   };
+  const handleProductQuantityChange = (ev) => {
+    setProductQuantity(ev.target.value);
+  };
   const editDone = () => {
     const validateValue = Joi.validate(
-      { productName, productPrice, email },
+      { productName, productPrice, productQuantity, email },
       AddProductValidation,
       { abortEarly: false }
     );
@@ -45,11 +49,11 @@ const EditComponent = (props) => {
 
     axios
       .put(
-        `products/editProduct?id=${props.id}&productName=${productName}&productPrice=${productPrice}&email=${email}`
+        `products/editProduct?id=${props.id}&productName=${productName}&productPrice=${productPrice}&productQuantity=${productQuantity}&email=${email}`
       )
       .then((data) => {
         console.log("data from axios", data);
-        if (data.status === "Success") {
+        if (data.data.status === "Success") {
           toast.success(`🦄 woop woop product was edited successfully!`, {
             position: "top-right",
             autoClose: 5000,
@@ -94,6 +98,18 @@ const EditComponent = (props) => {
             id="exampleInputprice1"
             onChange={handleProductPriceChange}
             value={productPrice}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleInputPrice1" className="form-label">
+            Product Quantity
+          </label>
+          <input
+            type="Quantity"
+            className="form-control"
+            id="exampleInputprice1"
+            onChange={handleProductQuantityChange}
+            value={productQuantity}
           />
         </div>
 

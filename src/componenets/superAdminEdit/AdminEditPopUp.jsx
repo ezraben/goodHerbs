@@ -8,7 +8,6 @@ import EditUserValidation from "../../validation/EditUser.validation";
 const EditPopUp = (props) =>
   // { emailToDelete, deleteOnPopUpClick, hidePopUp }
   {
-    console.log("props.props", props);
     const [firstName, setFirstName] = useState(props.firstName);
     const [lastName, setLastName] = useState(props.lastName);
     const [email, setEmail] = useState(props.email);
