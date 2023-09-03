@@ -1,8 +1,10 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import UsersComonent from "../../componenets/UsersComponent/Users.Component";
 import DeletePopUp from "../../componenets/deletePopUp/DeletePopUp.componet";
 import EditPopUp from "../../componenets/superAdminEdit/AdminEditPopUp";
+import { log } from "joi-browser";
 
 const SupeAdminDashBordPage = () => {
   useEffect(() => {
@@ -19,7 +21,6 @@ const SupeAdminDashBordPage = () => {
   const [isUserAdmin, setIsUserAdmin] = useState();
 
   const [arrOfUsers, setArrOfUsers] = useState([]);
-  const [rowNumber, setRowNumber] = useState("");
 
   const handleShowPopUp = (id, email) => {
     setShowDeleteComp(true);
@@ -29,7 +30,7 @@ const SupeAdminDashBordPage = () => {
   };
   const handleShowEditPopUp = (id, email, admin, firstName, lastName) => {
     setShowEditeComp(true);
-    // setShowEditeComp(true);
+
     setUserId(id);
     setIsUserAdmin(admin);
     setUerFirstName(firstName);
@@ -56,13 +57,25 @@ const SupeAdminDashBordPage = () => {
 
   const confirmDeleteUser = (ev) => {
     console.log("click");
+    ev.stopPropagation();
     axios
-      .delete(`/users/removeUser?id=${userId}`)
+      .delete(`/users/removeUser?id=${userId}&email=${userEmail}`)
+
       .then((data) => {
         axios
           .delete(`products/deleteProductsByUserForDelete?email=${userEmail}`)
 
-          .then((data) => {})
+          .then((data) => {
+            toast.success(`user deleted successfully!`, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          })
           .catch((err) => {
             console.log("err", err);
           });
@@ -77,7 +90,8 @@ const SupeAdminDashBordPage = () => {
 
   return (
     <div>
-      <h1>Admin Dashbord</h1>
+      <h1 className="text-center mb-3">Admin Dashbord</h1>
+
       {arrOfUsers.map((arr) => (
         <UsersComonent
           userFirstName={arr.firstName}

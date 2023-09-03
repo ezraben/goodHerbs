@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import productCss from "./productCss.css";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { CashCoin, Pencil, Trash } from "react-bootstrap-icons";
 
 const ProductCardComponent = ({
   setProductName,
@@ -10,8 +12,9 @@ const ProductCardComponent = ({
   handleDeleteProduct,
   handleShowEditProduct,
   handleBuyProductClick,
+  handleRemoveLikeProduct,
 
-  // handleLikeMsg,
+  handleLikeMsg,
 
   editProductId,
   productIdFromClickOnCard,
@@ -28,6 +31,7 @@ const ProductCardComponent = ({
   useEffect(() => {
     getLikedProductsByUsers();
   }, []);
+
   useEffect(() => {
     showLikedMsg();
   }, [likedProductsArr]);
@@ -37,6 +41,7 @@ const ProductCardComponent = ({
       .get(`/users/showLikedProductsByUser?email=${logInUserEmail}`)
       .then((data) => {
         setLikedProductsArr(data.data);
+        console.log("data", data);
       })
       .catch((err) => {
         console.log("err", err);
@@ -46,6 +51,7 @@ const ProductCardComponent = ({
   const showLikedMsg = () => {
     if (likedProductsArr.length > 0) {
       for (let i = 0; i <= likedProductsArr.length; i++) {
+
         if (likedProductsArr[i] === setProductId) {
           setLikedMsg(true);
         }
@@ -60,6 +66,19 @@ const ProductCardComponent = ({
       )
       .then((data) => {
         console.log("data", data);
+
+        axios.put(
+          `/products/addUserToWhoLikeProduct?id=${setProductId}&email=${logInUserEmail}`
+        );
+        toast.success(`🦄 you liked this product `, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
       .catch((err) => {
         console.log(err, err);
@@ -93,8 +112,6 @@ const ProductCardComponent = ({
       setProductPrice,
       setProductQuantity
     );
-
-    console.log("click");
   };
 
   const onBuy = () => {
@@ -105,63 +122,84 @@ const ProductCardComponent = ({
     setLikeInput(ev.target.checked);
     getLikedProductsByUsers();
   };
+  const removeLikeProductClick = () => {
+    handleRemoveLikeProduct(setProductId);
+  };
 
   return (
     <div onClick={clickOnCard} className="product">
-      {likedMsg && <h1>you liked this product</h1>}
+      {likedMsg && <h1 className="colorRed">you liked this product</h1>}
 
-      <div className="mb-3">
-        {/* <button onClick={getLikedProductsByUsers}>
-          getLikedProductsByUsers
-        </button> */}
-        <h1> product name: {setProductName}</h1>
+      <div>
+        <h1>
+          {" "}
+          product name: <span className="text-primary">{setProductName}</span>
+        </h1>
       </div>
       <div className="mb-3">
-        <h2> product price: {setProductPrice} </h2>
+        <h2>
+          {" "}
+          product price: <span className="text-success">
+            {setProductPrice}
+          </span>{" "}
+        </h2>
       </div>
       <div className="mb-3">
-        <h2> product quantity: {setProductQuantity} </h2>
+        <h2>
+          {" "}
+          product quantity:{" "}
+          {setProductQuantity < 4 ? (
+            <span className="text-danger">{setProductQuantity}</span>
+          ) : (
+            <span className="text-primary">{setProductQuantity}</span>
+          )}{" "}
+        </h2>
       </div>
 
       {window.location.pathname === "/dash" && (
         <div className="buttonContainer">
           <button onClick={onDelete} className="btn btn-danger">
-            Delete Product
+            Delete Product <Trash />
           </button>
           <button onClick={showEditClick} className="btn btn-warning">
-            Edit Product
+            Edit Product {""}
+            <Pencil />
           </button>
         </div>
       )}
       {window.location.pathname === "/AllProductsComponent" &&
         setProductQuantity > 0 && (
-          <div className="buttonContainer">
+          <div className="buttonContainer mb-3">
             <button onClick={onBuy} className="btn btn-primary">
               Buy product
+              {""} <CashCoin />
             </button>
           </div>
         )}
       {window.location.pathname === "/AllProductsComponent" &&
         setProductQuantity <= 0 && (
           <div className="buttonContainer">
-            <h2> product out of stock</h2>
+            <h2 className="text-warning"> product out of stock {""}</h2>
           </div>
         )}
-      {window.location.pathname === "/AllProductsComponent" && (
-        <div>
-          <input
-            type="checkbox"
-            name=""
-            id=""
-            onChange={onInputLikeClick}
-            value={likeInput}
-          />
-          <span>check the box to like the property</span>
-        </div>
-      )}
+      {window.location.pathname === "/AllProductsComponent" &&
+        likedMsg === false && (
+          <div>
+            <input
+              type="checkbox"
+              name=""
+              id=""
+              onChange={onInputLikeClick}
+              value={likeInput}
+            />
+            <span> check the box to like the property</span>
+          </div>
+        )}
       {window.location.pathname === "/LikedProductPage" && (
         <div>
-          <button className="btn btn-danger">remove </button>
+          <button onClick={removeLikeProductClick} className="btn btn-danger">
+            Remove from liked products <Trash />
+          </button>
         </div>
       )}
     </div>

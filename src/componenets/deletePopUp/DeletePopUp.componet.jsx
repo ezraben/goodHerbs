@@ -8,31 +8,24 @@ const DeletePopUp = ({ emailToDelete, deleteOnPopUpClick, hidePopUp }) => {
   return (
     <div onClick={hidePopUp} className="center-wrapper">
       <div onClick={handleFormClick} className="buttonContainer center-form">
-        <p>Are you sure you wanna delete the user {emailToDelete}?</p>
-        <button onClick={deleteOnPopUpClick} className="btn btn-warning">
-          Delete
-        </button>
-        <button onClick={hidePopUp} className="btn btn-danger">
-          Cancel
-        </button>
+        <div className="topSpaceFromNav form-group">
+          <div>
+            <p>
+              Are you sure you wanna delete the user{" "}
+              <span className="text-danger">{emailToDelete}?</span>{" "}
+            </p>
+          </div>
+          <div className="d-flex justify-content-around">
+            <button onClick={deleteOnPopUpClick} className="btn btn-danger ">
+              Delete
+            </button>
+            <button onClick={hidePopUp} className="btn btn-warning">
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-
-    ////////////////////////////////////
-    //before adding stop propagation
-    // <div  className="center-wrapper">
-    //   <div className="buttonContainer center-form">
-    //     <p>Are you sure you wanna delete the user {emailToDelete}?</p>
-    //     <button onClick={deleteOnPopUpClick} className="btn btn-warning">
-    //       Delete
-    //     </button>
-    //     <button onClick={hidePopUp} className="btn btn-danger">
-    //       Cancel
-    //     </button>
-    //   </div>
-    // </div>
-    ////////////////////////////////////
-    // until here before adding stop propagation
   );
 };
 

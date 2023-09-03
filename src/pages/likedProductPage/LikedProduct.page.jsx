@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import ProductCardComponent from "../../componenets/ProductCard/ProductCard.component";
 
 const LikedProductPage = () => {
@@ -23,6 +24,38 @@ const LikedProductPage = () => {
         console.log("err", err);
       });
   };
+  const removeLikeProduct = (id) => {
+    axios
+      .put(
+        `/products/removeLikedProductByUser?email=${logInUserEmail}&id=${id}`
+      )
+      .then(() => {
+        getLikedProductsByUsers();
+
+        toast.success("removed from your liked products", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((err) => {
+        toast.error("something went wrong", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.log("err", err);
+      });
+  };
+
   console.log("likedProductsArr", likedProductsArr);
 
   return (
@@ -33,11 +66,17 @@ const LikedProductPage = () => {
           setProductPrice={arr.productPrice}
           setProductQuantity={arr.productQuantity}
           setProductId={arr._id}
-          // invocLikeProduct={ShowLikedProducts}
-          // handleLikeMsg={likeMsgToPass}
+          handleRemoveLikeProduct={removeLikeProduct}
           key={arr._id}
         />
       ))}
+      {likedProductsArr < 1 && (
+        <h1>
+          {" "}
+          your liked products will show up here after you will like them on all
+          products page
+        </h1>
+      )}
     </div>
   );
 };

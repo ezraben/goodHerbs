@@ -20,10 +20,8 @@ import {
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import Root from "./routes/root";
 import ErrorPage from "./pages/ErrorPage/Error.page";
 import { Fragment, useEffect } from "react";
-import NavBarComponent from "./routes/root";
 import ProtectedComponent from "./routes/protectedRoutes/dashBordProtection/DashbordProtected";
 import ProtectingAddProductComponent from "./routes/protectedRoutes/addProductProtection/ProtecteingAddProducd.component";
 import NavbarWrapper from "./componenets/NavWraper/NavbarWrapper";
@@ -31,6 +29,8 @@ import DeleteAccountPage from "./pages/DeleteAccountPage/DeleteAccount.page";
 import DeleteUserProtection from "./routes/protectedRoutes/deleteUserProtection/DeleteUserProtection";
 import SupeAdminDashBordPage from "./pages/SuperAdminDshbord/SuperAdminDasbord.page";
 import LikedProductPage from "./pages/likedProductPage/LikedProduct.page";
+import AdminDataPage from "./pages/adminDataPage/AdminData.page";
+import FooterComponent from "./componenets/footerComponent/Footer.component";
 
 function App() {
   const isLogin = useSelector((store) => store.auth.loggedIn);
@@ -78,47 +78,53 @@ function App() {
           path: "/LikedProductPage",
           element: <LikedProductPage />,
         },
+        {
+          path: "/AdminDataPage",
+          element: <AdminDataPage />,
+        },
+        // {
+        //   path: "/",
+        //   element: <FooterComponent />,
+        // },
       ],
     },
   ]);
 
   return (
-    <div className="container">
-      <div className="container">
-        <ToastContainer />
-        {/* <NavBarComponent /> */}
-        <RouterProvider router={router}>
-          <Router>
-            <Routes>
-              <Route
-                path="/dash"
-                element={
-                  <ProtectedComponent isLogin={isLogin}>
-                    <Dashbordpage />
-                  </ProtectedComponent>
-                }
-              />
-              <Route
-                path="/addProduct"
-                element={
-                  <ProtectedComponent isLogin={isLogin}>
-                    <AddProductPage />
-                  </ProtectedComponent>
-                }
-              />
-              <Route
-                path="/DeleteAccountPage"
-                element={
-                  <ProtectedComponent isLogin={isLogin}>
-                    <DeleteAccountPage />
-                  </ProtectedComponent>
-                }
-              />
-            </Routes>
-          </Router>
-        </RouterProvider>
-      </div>
+    <div className="mainContainer">
+      <ToastContainer />
+      <RouterProvider router={router}>
+        <Router>
+          <Routes>
+            <Route
+              path="/dash"
+              element={
+                <ProtectedComponent isLogin={isLogin}>
+                  <Dashbordpage />
+                </ProtectedComponent>
+              }
+            />
+            <Route
+              path="/addProduct"
+              element={
+                <ProtectedComponent isLogin={isLogin}>
+                  <AddProductPage />
+                </ProtectedComponent>
+              }
+            />
+            <Route
+              path="/DeleteAccountPage"
+              element={
+                <ProtectedComponent isLogin={isLogin}>
+                  <DeleteAccountPage />
+                </ProtectedComponent>
+              }
+            />
+          </Routes>
+        </Router>
+      </RouterProvider>
     </div>
+    // </div>
   );
 }
 

@@ -22,8 +22,7 @@ const SingUpValidation = {
       )
     )
     .required(),
-  // password: Joi.string().min(9).max(150).required(),
-  // confirmPassword: Joi.ref("password"),
+
   isAdmin: Joi.boolean().required(),
 };
 

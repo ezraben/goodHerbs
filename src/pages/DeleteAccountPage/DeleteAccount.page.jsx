@@ -63,12 +63,17 @@ const DeleteAccountPage = () => {
 
   return (
     <div className="container">
-      <h1>are you sure you want to delete your account??</h1>
-      <h2>
-        if you will delete you accont you wont e able to retrive it and all the
-        properties will be deleted too
-      </h2>
-      <div className="mb-3">
+      <h1 className="text-center text-danger">
+        Are you sure you want to delete your account??
+      </h1>
+      <h3 className="text-center">
+        If you will delete you account, you wont be able to retrive it,
+      </h3>
+      <h3 className="text-center">
+        and all the properties will be deleted too.
+      </h3>
+
+      <div className="mb-3 text-center">
         <label className="switch">
           {" "}
           <span className="slider round"></span>
@@ -76,15 +81,19 @@ const DeleteAccountPage = () => {
             type="checkbox"
             onChange={hendleShowDeleteBtn}
             value={showDeleteBtn}
+            className="mn-3"
           />
           <span className="slider round"></span>
         </label>
         {showDeleteBtn === false && (
-          <span>switch on to delete your account</span>
+          <span> switch on to delete your account</span>
         )}
         {showDeleteBtn === true && isLogin === true && (
           <Fragment>
-            <span>by clicking you will delete your account</span>
+            <div className="mb-3">
+              {" "}
+              by clicking you will delete your account
+            </div>
             <button onClick={handleDeleteBtnClick} className="btn btn-danger">
               DELETE ACCOUNT
             </button>

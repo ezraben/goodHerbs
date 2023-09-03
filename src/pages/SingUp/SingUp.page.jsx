@@ -120,7 +120,7 @@ const SingUpPage = () => {
     }
   };
   return (
-    <div>
+    <div className="container d-flex justify-content-center">
       <form onSubmit={handleSubmit} className="topSpaceFromNav form-group">
         <h1 className="text-center mt-5">singUp</h1>
         <div className="mb-3">
@@ -190,9 +190,9 @@ const SingUpPage = () => {
           />
         </div>
         {password !== confirmPassword && (
-          <p className="alert alert-warning">
+          <div className="alert alert-warning">
             password and confirm password must match
-          </p>
+          </div>
         )}
         <div className="mb-3">
           <label className="switch">

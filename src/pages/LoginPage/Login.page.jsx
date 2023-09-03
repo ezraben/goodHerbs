@@ -8,6 +8,7 @@ import LoginValidation from "../../validation/Login.validation";
 import auth, { authActions } from "../../store/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import Dashbordpage from "../dashbordPage/Dashbord.page";
+import { BoxArrowInRight } from "react-bootstrap-icons";
 
 const LoginPage = () => {
   const isLogin = useSelector((store) => store.auth.loggedIn);
@@ -145,7 +146,9 @@ const LoginPage = () => {
         </div>
 
         <div className="text-center">
-          <button className="btn btn-primary text-center m-5">Login</button>
+          <button className="btn btn-primary text-center m-5">
+            Login <BoxArrowInRight />{" "}
+          </button>
         </div>
       </form>
     </div>

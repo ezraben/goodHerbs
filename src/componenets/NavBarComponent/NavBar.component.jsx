@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth";
-// import { authActions } from "../../store/auth";
 import { Fragment, useEffect, useState } from "react";
 
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import navCss from "./navCss.css";
+import { BoxArrowInRight, PersonAdd, PersonDash } from "react-bootstrap-icons";
 
 const NavBarComponent = () => {
   const isLogin = useSelector((store) => store.auth.loggedIn);
@@ -31,7 +32,7 @@ const NavBarComponent = () => {
   };
 
   return (
-    <div>
+    <div className="mb-5">
       <nav
         className={
           isLogin
@@ -39,12 +40,7 @@ const NavBarComponent = () => {
             : "navbar navbar-expand-lg navbar-light bg-danger"
         }
       >
-        {/* <nav className="navbar navbar-expand-lg navbar-light bg-light"> */}
         <div className="container-fluid">
-          {isLogin ? <div>{userEmail}</div> : <div>you are not connected</div>}
-          <NavLink className="navbar-brand" to="/">
-            Navbar
-          </NavLink>
           <button
             className="navbar-toggler"
             type="button"
@@ -57,52 +53,39 @@ const NavBarComponent = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                {/* <NavLink className="nav-a active" aria-current="page" to="#">
-                  Home
-                </NavLink> */}
-              </li>
-
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0 justify-content-around">
               {!isLogin && (
                 <Fragment>
                   <li className="nav-item">
                     <NavLink className="nav-link" to="login">
-                      Login
+                      you are not connected
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="login">
+                      Login <BoxArrowInRight />
                     </NavLink>
                   </li>
                   <li className="nav-item">
                     <NavLink className="nav-link" to="SingUpPage">
-                      SingUpPage
+                      SingUpPage <PersonAdd />
                     </NavLink>
                   </li>
                 </Fragment>
               )}
               {isLogin && admin === "false" && (
                 <Fragment>
-                  <li onClick={logOut} className="nav-item">
-                    <NavLink className="nav-link" to="#">
-                      LogOut
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      className="dropdown-item"
-                      to="AllProductsComponent"
-                    >
-                      AllProductsComponent
+                  <li className="nav-item">
+                    <NavLink className="nav-link text-white" to="/">
+                      {userEmail}
                     </NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink
-                      className="nav-link "
-                      to="/DeleteAccountPage"
-                      tabIndex="-1"
-                      aria-disabled="true"
-                    >
-                      DeleteAccountPage
+                    <NavLink className="nav-link" to="AllProductsComponent">
+                      AllProductsComponent
                     </NavLink>
                   </li>
+
                   <li className="nav-item">
                     <NavLink
                       className="nav-link "
@@ -113,11 +96,32 @@ const NavBarComponent = () => {
                       LikedProductPage
                     </NavLink>
                   </li>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link text-warning "
+                      to="/DeleteAccountPage"
+                      tabIndex="-1"
+                      aria-disabled="true"
+                    >
+                      DeleteAccountPage
+                    </NavLink>
+                  </li>
+                  <li onClick={logOut} className="nav-item">
+                    <NavLink className="nav-link text-danger" to="#">
+                      LogOut
+                      <PersonDash />
+                    </NavLink>
+                  </li>
                 </Fragment>
               )}
 
               {isLogin && admin === "true" && (
                 <Fragment>
+                  <li className="nav-item">
+                    <NavLink className="nav-link text-white" to="/">
+                      {userEmail}
+                    </NavLink>
+                  </li>
                   <li className="nav-item dropdown">
                     <NavLink
                       className="nav-link dropdown-toggle"
@@ -134,11 +138,6 @@ const NavBarComponent = () => {
                       aria-labelledby="navbarDropdown"
                     >
                       <li>
-                        <NavLink className="dropdown-item" to="addProduct">
-                          addProduct
-                        </NavLink>
-                      </li>
-                      <li>
                         <NavLink
                           className="dropdown-item"
                           to="AllProductsComponent"
@@ -146,11 +145,7 @@ const NavBarComponent = () => {
                           AllProductsComponent
                         </NavLink>
                       </li>
-                      <li>
-                        <NavLink className="dropdown-item" to="dash">
-                          Dashbord
-                        </NavLink>
-                      </li>
+
                       <li>
                         <NavLink
                           className="dropdown-item"
@@ -168,45 +163,47 @@ const NavBarComponent = () => {
                         </NavLink>
                       </li>
                       <li>
+                        <NavLink className="dropdown-item" to="AdminDataPage">
+                          AdminDataPage
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          className="dropdown-item text-danger"
+                          to="/DeleteAccountPage"
+                          tabIndex="-1"
+                          aria-disabled="true"
+                        >
+                          DeleteAccountPage
+                        </NavLink>
+                      </li>
+                      <li>
                         <hr className="dropdown-divider" />
                       </li>
                     </ul>
                   </li>
-                  <li onClick={logOut} className="nav-item">
-                    <NavLink className="nav-link" to="#">
-                      LogOut
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="dash">
+                      Dashbord
                     </NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink
-                      className="nav-link "
-                      to="/DeleteAccountPage"
-                      tabIndex="-1"
-                      aria-disabled="true"
-                    >
-                      DeleteAccountPage
+                    <NavLink className="nav-link" to="addProduct">
+                      addProduct
+                    </NavLink>
+                  </li>
+
+                  <li onClick={logOut} className="nav-item">
+                    <NavLink className="nav-link text-danger" to="#">
+                      LogOut <PersonDash />
                     </NavLink>
                   </li>
                 </Fragment>
               )}
             </ul>
-            <form className="d-flex">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
           </div>
         </div>
       </nav>
-      {/* <div id="detail">
-        <Outlet />
-      </div> */}
     </div>
   );
 };

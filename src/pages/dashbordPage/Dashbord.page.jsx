@@ -100,6 +100,12 @@ const Dashbordpage = (props) => {
           edit={onEditDone}
         />
       )}
+      {arrOfProducts.length < 1 && (
+        <h1>
+          your products will show up here after you will create them in the add
+          product page
+        </h1>
+      )}
     </div>
   );
 };
